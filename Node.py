@@ -6,6 +6,14 @@ class Neighbor(object):
     def __repr__(self):
         return f"Neighbor(node={self.node}, weight={self.weight})"
     
+    def get_name(self):
+        if isinstance(self.node, Node):
+            return self.node.name
+        return str(self.node)
+    
+    def get_weight(self):
+        return self.weight
+
 
 class Node(object):
     def __init__(self, name, topolink, neighbors):
@@ -40,14 +48,12 @@ class Node(object):
         for neighbor in self.links:
             if neighbor.get_name() not in self.neighbor_names:
                 raise Exception(neighbor.get_name() + " is not a valid neighbor for " + self.name)
-            if neighbor.get_weight() != node_neighbor.get_weight(self.neighbor_names):
-                raise Exception("Weight for neighbor " + neighbor.get_name() + " has incorrect link weight to" + self.name)
 
     def send_msg(self, msg, dest):
         """Send a message to a neighbor node."""
         if dest not in self.neighbor_names:
-            raise Exception(f"Neighbor " + dest + "not part of neighbors of " + self.name)
-        self.topology.topodict[dest].queue.msg(msg)
+            raise Exception(f"Neighbor {dest} not part of neighbors of {self.name}")
+        self.topology.topodict[dest].queue_msg(msg)
 
 
     def queue_msg(self, msg):
@@ -55,13 +61,12 @@ class Node(object):
         self.messages.append(msg)
 
     def add_neighbor(self, neighbor):
-        self.neighbors.append(neighbor)
-
-    def __repr__(self):
-        return f"Node(name={self.name}, neighbors={self.neighbors})"
+        self.links.append(neighbor)
+        if isinstance(neighbor, Neighbor):
+            self.neighbor_names.append(neighbor.get_name())
     
     def get_neighbors(self):
-        return self.neighbors
+        return self.links
 
     def get_name(self):
         return self.name
