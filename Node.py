@@ -52,7 +52,7 @@ class Node(object):
     def send_msg(self, msg, dest):
         """Send a message to a neighbor node."""
         if dest not in self.neighbor_names:
-            raise Exception(f"Neighbor " + dest + " not part of neighbors of " + self.name)
+            raise Exception(f"Neighbor {dest} not part of neighbors of {self.name}")
         self.topology.topodict[dest].queue_msg(msg)
 
 
