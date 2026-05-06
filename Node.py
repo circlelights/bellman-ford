@@ -1,3 +1,8 @@
+# In Node.py there are two classes: Neighbor and Node. 
+# The Neighbor class represents a neighboring node and the weight of the link to that neighbor.
+#  The Node class represents a node in the network, which has a name, a reference to the topology it belongs to, 
+# a list of its neighbors, and a message queue for incoming messages.
+
 class Neighbor(object):
     def __init__(self, node, weight):
         self.node = node
@@ -17,7 +22,7 @@ class Node(object):
         
         for neighbor in neighbors:
             self.neighbor_names.append(neighbor.get_name())
-
+ 
     def get_neighbor_weights(self, neighbor_name):
         for neighbor in self.links:
             if neighbor.get_name() == neighbor_name:
